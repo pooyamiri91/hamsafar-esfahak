@@ -12,3 +12,5 @@ __pycache__/
 Thumbs.db
 
 public/
+node_modules/
+.netlify/

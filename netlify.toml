@@ -1,0 +1,16 @@
+[build]
+  command = "python build_static.py"
+  publish = "public"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+[server]
+  path = "/api/*"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "same-origin"
+    X-Frame-Options = "DENY"
