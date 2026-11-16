@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>همسفر اصفهک | برنامه و همسفرها</title>
+
+<style>
+:root{--bg:#f6efe4;--sf:#fffaf2;--tx:#2b2118;--mu:#7a6a58;--ac:#b4532a;--ac2:#2f6f6a;--bd:#e3d6c3;--hl:#ffe6a8;--wn:#a3281f;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#1d1812;--sf:#27201a;--tx:#f1e7d8;--mu:#b3a18c;--ac:#e58a5c;--ac2:#6cc0b8;--bd:#3d3328;--hl:#5a4713;--wn:#ff8f84}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#1d1812;--sf:#27201a;--tx:#f1e7d8;--mu:#b3a18c;--ac:#e58a5c;--ac2:#6cc0b8;--bd:#3d3328;--hl:#5a4713;--wn:#ff8f84}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Vazirmatn,Tahoma,"Segoe UI",sans-serif;line-height:1.8;font-size:16px}
+header{padding:22px 18px 10px;max-width:640px;margin:auto}
+h1{margin:0;font-size:30px;font-weight:800;color:var(--ac)}
+header p{margin:2px 0 0;color:var(--mu);font-size:14px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--bd)}
+nav div{display:flex;gap:6px;max-width:640px;margin:auto;padding:8px 14px;overflow-x:auto}
+nav button{flex:0 0 auto;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font:inherit;font-size:14px;padding:4px 14px;border-radius:99px;cursor:pointer}
+nav button[aria-selected=true]{background:var(--ac);border-color:var(--ac);color:#fff}
+button:focus-visible,input:focus-visible{outline:3px solid var(--ac2);outline-offset:2px}
+main{max-width:640px;margin:auto;padding:14px 14px 60px}
+section{display:none}section.on{display:block}
+h2{font-size:19px;margin:22px 0 8px;color:var(--ac2)}
+.day{border-inline-start:3px solid var(--ac);padding-inline-start:12px;margin:0 0 6px}
+.ev{display:flex;gap:12px;padding:7px 0;border-bottom:1px dashed var(--bd)}
+.ev b{flex:0 0 64px;color:var(--ac);font-weight:600;font-size:14px}
+.ev span{flex:1}.ev small{display:block;color:var(--mu);font-size:13px}
+.box{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin:10px 0}
+.warn{border-color:var(--wn)}.warn b{color:var(--wn)}
+.room{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:8px 14px;margin:8px 0;display:flex;gap:12px;align-items:baseline}
+.room.hit{background:var(--hl);border-color:var(--ac)}
+.room strong{flex:0 0 auto;min-width:48px;color:var(--ac)}
+.room em{font-style:normal;color:var(--mu);font-size:13px;white-space:nowrap}
+input[type=search]{width:100%;font:inherit;padding:10px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--sf);color:var(--tx)}
+label.ck{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--bd);cursor:pointer}
+label.ck input{width:20px;height:20px;accent-color:var(--ac2)}
+label.ck input:checked+span{text-decoration:line-through;color:var(--mu)}
+.mu{color:var(--mu);font-size:13px}
+.bn{border:2px solid var(--ac);background:var(--sf);border-radius:12px;padding:14px;margin:10px 0}
+.bn big{display:block;font-size:21px;font-weight:800;line-height:1.6;margin:2px 0 8px}
+.btn{font:inherit;border:0;border-radius:10px;padding:10px 16px;background:var(--ac2);color:var(--bg);font-weight:600;cursor:pointer}
+.btn.alt{background:var(--ac)}.btn.wn{background:var(--wn)}
+.btn[aria-pressed=true]{outline:3px solid var(--tx);outline-offset:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chip{font:inherit;font-size:14px;border:1px solid var(--ac);background:var(--sf);color:var(--tx);border-radius:99px;padding:4px 14px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ac);color:#fff}
+.mem{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed var(--bd)}
+.st-help{color:var(--wn);font-weight:600}
+input[type=text]{font:inherit;padding:8px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);width:100%;margin:6px 0}
+.row{display:flex;gap:8px;align-items:center}.row input{flex:1}
+.bn.warn{border-color:var(--wn)}#fab{position:fixed;inset-inline-start:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:9;width:54px;height:54px;border-radius:50%;border:0;background:var(--wn);color:#fff;font-size:24px;box-shadow:0 2px 8px rgba(0,0,0,.35);cursor:pointer}
+select{font:inherit;padding:8px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);width:100%;margin:6px 0}
+</style>
+<style>
+:root{color-scheme:light}
+body{padding-bottom:86px}header{padding:24px 20px 12px}header h1{font-size:28px}
+header p{font-size:12px}.brandline{display:flex;align-items:center;justify-content:space-between;gap:12px}.badge{background:#e5efea;color:#245d51;border-radius:20px;padding:4px 10px;font-size:12px;white-space:nowrap}
+.intro{font-size:13px;color:var(--mu);margin:6px 0}.box{border-radius:16px;padding:16px;margin:12px 0}.box h2,.box h3{margin-top:0}.box p:last-child{margin-bottom:0}
+nav{border-top:1px solid var(--bd)}nav div{gap:8px;padding:10px 16px}nav button{min-height:44px;padding:6px 16px}
+main{padding:10px 16px 30px}button,a.btn{min-height:44px}.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;line-height:1.6;color:#fff}.btn:disabled{opacity:.55;cursor:wait}
+.subtle{background:transparent!important;border:1px solid var(--bd);color:var(--tx)!important}.wide{width:100%}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.actions>*{flex:1}.stack{display:grid;gap:12px}.fields{display:grid;gap:14px}.fields label{display:block;font-size:14px;font-weight:600}.fields input,.fields select,.fields textarea,input[type=password],input[type=number]{display:block;width:100%;min-height:48px;margin:5px 0 0;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;background:var(--sf);color:var(--tx);font:inherit;box-sizing:border-box}
+textarea{resize:vertical;min-height:90px}.fields small{display:block;font-weight:400;color:var(--mu)}.fields .check{display:flex;align-items:flex-start;gap:10px;font-weight:400}.fields .check input{width:22px;min-height:22px;margin-top:4px;accent-color:var(--ac2)}
+.membercard{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:16px;margin:10px 0}.memberhead{display:flex;align-items:center;gap:12px}.avatar{width:44px;height:44px;flex-shrink:0;display:grid;place-items:center;border-radius:50%;background:#eee4d5;color:#8d4829;font-family:Tahoma;font-weight:bold}.membername{font-weight:700;overflow-wrap:anywhere}.telegram{font-family:Tahoma;font-size:12px;color:var(--mu);overflow-wrap:anywhere}.membermeta{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.tag{font-size:12px;background:var(--bg);border-radius:8px;padding:3px 8px}.ready{color:#245d51;background:#e5efea}.membercard p{font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}.empty{text-align:center;padding:25px 12px;color:var(--mu)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.stats div{background:var(--sf);border:1px solid var(--bd);border-radius:14px;text-align:center;padding:12px 5px;font-size:12px}.stats b{display:block;font-size:24px;color:var(--ac2)}
+#connection{font-size:12px;color:var(--mu);margin:0}.statusbar{max-width:640px;margin:auto;padding:0 20px 10px;display:flex;justify-content:space-between;align-items:center;gap:10px}.statusbar button{font:inherit;border:0;background:none;color:var(--ac2);padding:4px;cursor:pointer}.statusbar [hidden]{display:none}
+.bottomnav{position:fixed;bottom:0;left:0;right:0;z-index:10;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:var(--sf);border-top:1px solid var(--bd);display:flex;justify-content:center;gap:8px}.bottomnav button{max-width:180px;flex:1;border:0;border-radius:10px;font:inherit;font-size:13px;background:transparent;color:var(--mu);padding:10px 4px}.bottomnav button[aria-current=true]{background:#e5efea;color:#245d51;font-weight:bold}#fab{bottom:calc(85px + env(safe-area-inset-bottom));width:48px;height:48px;font-size:20px}
+#toast{position:fixed;inset-inline:16px;bottom:150px;max-width:590px;margin:auto;z-index:30;background:#243f39;color:white;padding:14px 18px;border-radius:12px;box-shadow:0 5px 25px #0002}#toast[hidden]{display:none}.notice-title{font-size:12px;color:var(--ac);font-weight:bold}.next-time{font-size:27px;font-weight:800;color:var(--ac2)}.notice-content{white-space:pre-wrap;overflow-wrap:anywhere}.calc-result{border-radius:12px;background:#e5efea;color:#244c41;padding:16px;margin-top:16px}.calc-result strong{font-size:24px}.fuelcols{display:grid;grid-template-columns:1fr 1fr;gap:12px}.muted-link{color:var(--ac2)}#editor{scroll-margin-top:90px}.error{color:var(--wn);font-size:14px}input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--ac2);outline-offset:3px}section:focus{outline:none}.helper{font-size:12px;color:var(--mu)}[hidden]{display:none!important}
+@media(max-width:360px){main{padding-inline:12px}.fuelcols{grid-template-columns:1fr}.bottomnav{gap:2px}.bottomnav button{font-size:12px}}
+
+</style>
+</head>
+<body>
+<header><h1>سفر اصفهک</h1><p>تهران ← قم ← نائین ← انارک ← خوربیابانک ← طبس ← اصفهک</p></header>
+<nav><div role="tablist" id="tabs"></div></nav>
+<main>
+<section id="plan"></section>
+<section id="rooms"><h2>اتاق من کجاست؟</h2><input type="search" id="q" placeholder="اسم خودتان یا همراهتان را بنویسید" aria-label="جست‌وجوی نام"><div id="rl"></div></section>
+<section id="road"></section>
+<section id="sos"></section>
+<section id="pack"></section>
+<section id="rules"></section>
+</main>
+<button id="fab" aria-label="اضطراری">🆘</button>
+<script>
+var initialPageHash=location.hash;
+var TABS=[["plan","برنامه"],["rooms","اتاق‌ها"],["road","مسیر"],["sos","🆘 اضطراری"],["pack","چک‌لیست"],["rules","قوانین"]];
+var DD=["2026-11-17","2026-11-18","2026-11-19","2026-11-20"];
+var DAYS=[
+["سه‌شنبه ۲۶ آبان (رفت)",[
+["۷:۰۰","حرکت از کنار ایستگاه ۳۴ آتش‌نشانی، روبروی ترمینال غرب","هرکس زودتر یا دیرتر برود مشکلی نیست؛ حداکثر تا ۱۰ صبح حرکت کنید"],
+["ظهر","ناهار در مسیر","صبحانه جایی نمی‌ایستیم"],
+["۱۹:۰۰","رسیدن به اصفهک و تحویل اتاق‌ها","دوستان شهرستانی: قرار دیدار در اصفهک"],
+["شب","شام اختیاری در رستوران نزدیک اصفهک","باید از قبل با لیدر هماهنگ شود"]]],
+["چهارشنبه ۲۷ آبان",[
+["۵:۳۰","بیدار شدن",""],
+["۶:۳۰","صبحانه در اقامتگاه","تا ۷:۳۰ آماده حرکت باشید"],
+["۹:۰۰","ازمیغان: حوضچه‌ها، مزارع برنج و نخلستان‌ها","حدود ۲ ساعت؛ در صورت مناسب بودن شرایط شنا"],
+["۱۱:۳۰","حرکت به دره کال‌جنی","بازدید تا ۲:۳۰ یا ۳"],
+["۱۶:۰۰","ناهار در اقامتگاه و استراحت","برای تا آن موقع تنقلات کافی ببرید"],
+["عصر","کافه‌ها و کوچه‌های روستا",""],
+["شب","موسیقی سنتی و شام کنار طاق","تا حدود ۲۳:۰۰"]]],
+["پنجشنبه ۲۸ آبان",[
+["۶:۳۰","بیدار شدن",""],
+["۷:۳۰","صبحانه","حرکت تا ۸:۰۰"],
+["۸:۰۰","چشمه مرتضی‌علی و طاق عباسی","تا حدود ۱۲:۰۰؛ تنقلات همراه باشد"],
+["۱۳:۰۰","ناهار در اقامتگاه","۱:۰۰ تا ۱:۳۰"],
+["۱۵:۰۰","کویر ماسه‌بادی و عکاسی تا غروب",""],
+["۱۹:۰۰","حمام خزینه: سانس خانم‌ها",""],
+["۲۲:۰۰","حمام خزینه: سانس آقایان","بعد از آن روستاگردی، عکاسی و کافه"]]],
+["جمعه ۲۹ آبان (برگشت)",[
+["تا ۷:۳۰","خواب","می‌توانید بخوابید 😅"],
+["تا ۸:۳۰","صبحانه و تحویل اتاق‌ها",""],
+["ظهر","حرکت به تهران",""]]]];
+var ROOMS=[
+["حاجی‌پدر","۱۱۵","۲ نفر","آقا پویا و همراه"],
+["حاجی‌پدر","۱۱۶","۲ نفر","علی‌آقا و همراه"],
+["حاجی‌پدر","۱۱۷","۲ نفر","آقا سروش و همراه"],
+["حاجی‌پدر","۱۱۸","۲ نفر","آقا کوهیار و همراه"],
+["حاجی‌پدر","۱۱۹","۲ نفر","آقا پویا و همراه"],
+["حاجی‌پدر","۱۲۰","۴ نفر","نگار خانم و همراه، هانی خانم و همراه"],
+["سوییت پی‌باغ","راهرو، دست راست","۲ نفر","آقا محمد و همراه"],
+["سوییت پی‌باغ","سالن، سمت راست (۲ اتاق)","۵ نفر","فاطمه، مبینا خانم و همراه، حکیمه جان"],
+["سوییت پی‌باغ","سالن، سمت چپ","۳ نفر","رضوانه خانم، آقا اشکان و همسر"],
+["سوییت پی‌باغ","حیاط اقامتگاه","۲ نفر","آقا کاوه و همسر"]];
+var PACK=["کوله یک‌روزه","صندل","کفش مناسب پیاده‌روی سبک","مایو","قمقمه آب","عینک آفتابی","کرم ضدآفتاب","لباس گرم (شب‌ها سرد است)","کارت سوخت شخصی","تنقلات و خوراکی برای چهارشنبه و پنجشنبه","پوشش مناسب: بدون شلوارک و رکابی","تشک و ملحفه شخصی (اگر حساس هستید)","داروهای شخصی"];
+var RULES=[
+["پوشش","رعایت حجاب و پوشش برای آقایان و خانم‌ها الزامی است. شلوارک، رکابی و لباس نامتعارف نپوشید؛ در غیر این صورت امکان همراهی در گشت‌ها نیست.",1],
+["حوضچه‌ها","بدون هماهنگی با لیدر وارد حوضچه‌ها نشوید و از گروه جدا نشوید."],
+["مشروبات","قوانین سفر و اقامتگاه را رعایت کنید. محدودیت‌ها و نکات مسیر را پیش از حرکت از لیدر بپرسید.",1],
+["اقامتگاه","مصرف مواد مخدر و الکل و آوردن حیوان خانگی ممنوع است."],
+["بنزین","کارت سوخت همراه داشته باشید. تا انارک با کارت آزاد می‌شود، اما سمت طبس احتمالاً فقط با کارت خودتان."],
+["وقت‌شناسی","لیدر برای هر نفر فقط ۱۵ دقیقه صبر می‌کند. سر ساعت آماده باشید."],
+["سلامت","اگر بیماری خاصی دارید، قبل از سفر به لیدر بگویید."],
+["اقامتگاه‌ها","دو اقامتگاه داریم؛ هرکدام یک حمام و یک سرویس ایرانی و فرنگی. اتاق‌ها کف‌خواب هستند. اصفهک روستایی محروم است، پس انتظارات را متناسب نگه دارید."]];
+
+function $(i){return document.getElementById(i)}
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+function norm(s){return s.replace(/[ي]/g,"ی").replace(/[ك]/g,"ک").replace(/\s+/g,"")}
+
+function fa(n){return String(n).replace(/\d/g,function(d){return "۰۱۲۳۴۵۶۷۸۹".charAt(d)})}
+var CAT=[["سواری کوچک (پراید، تیبا، کوییک)",7.5,41],["سواری متوسط (۲۰۶، ۲۰۷، سمند، رانا، دنا)",8.5,50],["سدان بزرگ (۴۰۷، سورن، کرولا)",9.5,55],["کراس‌اوور (ایکس‌تی ۲۵، X33، تیگو)",10,55],["شاسی‌بلند (پاجرو، پرادو)",13,80],["ون یا مینی‌بوس",15,70]],LEG=[["نطنز تا نائین",140],["نائین تا انارک",73],["انارک تا جندق",107],["جندق تا خور",68],["خور تا طبس",171],["طبس تا اصفهک",36]];
+var ALL=["Pooya Miri","Bahareh Mohebzadeh","Farhad Leader","Tina (leader assistant)","Mohamadreza Kalate (leader assistant)","Farhad Ashrafi (leader assistant)","Ali Nategh Fasihi","Haki P.e","Sarina Sadeghi","Christina","Soroush Berenty","Mohammad Khalili","Maryam Shenasa","Ashkan Sajjadi","MObina","Koohyar H.j","Mahshid Ospid","Negar","Kaveh Javan","Rezvaneh Jafari","Fateme","Mina Gholami","Hanieh Chitsaz","Mahi","Sepehr","Neda Seddigh","Soroush H"];
+function fuelHtml(){return '<h2>ماشین‌حساب بنزین</h2><div class="box"><label class="mu" for="fc">نوع ماشین</label><select id="fc">'+CAT.map(function(c,i){return '<option value="'+i+'">'+c[0]+'</option>'}).join("")+'</select><label class="mu" for="fl">بنزین باک الان</label><select id="fl">'+[[100,"باک پر"],[75,"سه‌چهارم"],[50,"نصف"],[25,"ربع"]].map(function(l){return '<option value="'+l[0]+'">'+l[1]+'</option>'}).join("")+'</select><label class="mu" for="ft">ظرفیت باک به لیتر (اگر می‌دانید)</label><input id="ft" type="text" inputmode="numeric"><div id="fr"></div></div>'}
+function bindFuel(){var c=$("fc"),l=$("fl"),t=$("ft");if(!c)return;
+ function go(){var k=CAT[+c.value],tv=+String(t.value).replace(/[۰-۹]/g,function(d){return "۰۱۲۳۴۵۶۷۸۹".indexOf(d)}),cap=tv>0?tv:k[2],lit=cap*(+l.value)/100,rng=Math.round(lit*100/k[1]*0.85);
+  t.placeholder="پیش‌فرض: "+fa(k[2]);
+  $("fr").innerHTML='<p>بنزین فعلی حدود <b>'+fa(Math.round(lit))+'</b> لیتر است. با ۱۵٪ ذخیره، حدود <b>'+fa(rng)+'</b> کیلومتر می‌روید.</p>'+LEG.map(function(g){var km=Math.round(g[1]*1.25),ok=rng>=km;return '<div class="mem"><span>'+g[0]+' (حدود '+fa(km)+' کیلومتر)</span><span class="'+(ok?'':'st-help')+'">'+(ok?'می‌رسید ✓':'کم است؛ قبلش پر کنید')+'</span></div>'}).join("")+'<p class="mu">مصرف میانگین این دسته '+fa(k[1])+' لیتر در ۱۰۰ کیلومتر فرض شده. فاصله‌ها خط مستقیم × ۱٫۲۵ است. بار زیاد، کولر و سرعت بالا مصرف را بیشتر می‌کند؛ فقط برای تصمیم تقریبی است.</p>'}
+ c.onchange=go;l.onchange=go;t.oninput=go;go()}
+
+var TEL="09360358389",TELF="۰۹۳۶۰۳۵۸۳۸۹";
+function tel(n,l){return '<a class="btn alt" href="tel:'+n+'">📞 '+l+'</a>'}
+var STN=[["قم",88,[["ماهان تندیس",34.6034,50.8029],["نگین",34.6019,50.8044]]],["کاشان",64,[["امیرکبیر",33.9766,51.3913],["بلوار امام رضا",33.9775,51.3904],["۲۹ اسفند",33.9928,51.4647]]],["نطنز",140,[["پمپ نطنز",33.6989,51.9974]]],["نائین",73,[["پمپ نائین",32.8528,53.1119],["پمپ شهری نائین",32.8627,53.0969]]],["انارک",107,[["پمپ انارک",33.2979,53.6857]],"آخرین بنزین با کارت آزاد، طبق لیدر"],["جندق",68,[["پمپ جندق",34.0444,54.4086]]],["خور",171,[["شایگان",33.7842,55.0719],["یغمایی",33.7748,55.0833]]],["طبس",36,[["برادران",33.6065,56.9059],["خیابان خرمشهر",33.5906,56.9265],["خیابان مطهری",33.6148,56.9345]]],["اصفهک",0,[]]];
+function stnHtml(){return '<h2>پمپ‌بنزین‌های مسیر</h2><p class="mu">از گوگل مپ؛ چند پمپ برای هر شهر. موجودی، ساعت کاری و سهمیه تضمین نیست. فاصله‌ها تقریبی و خط مستقیم است و جاده بیشتر می‌شود. بین تهران و قم پمپی پیدا نکردم؛ روی نقشه ببینید.</p>'+STN.map(function(c){return '<div class="box'+(c[1]>=100?' warn':'')+'"><b>'+c[0]+'</b>'+(c[3]?' <span class="mu">'+c[3]+'</span>':'')+'<br>'+(c[2].length?c[2].map(function(s){return '<a href="https://maps.google.com/?q='+s[1]+','+s[2]+'" target="_blank" rel="noopener">'+s[0]+'</a>'}).join("، "):'<span class="mu">پمپی پیدا نشد؛ نزدیک‌ترین در طبس است</span>')+(c[1]?'<br><span class="mu">تا پمپ بعدی حدود '+fa(c[1])+' کیلومتر'+(c[1]>=100?' (طولانی؛ باک را کامل کنید)':'')+'</span>':'')+'</div>'}).join("")}
+var tb=$("tabs");
+TABS.forEach(function(t){var b=document.createElement("button");b.textContent=t[1];b.setAttribute("role","tab");b.onclick=function(){show(t[0])};b.dataset.t=t[0];tb.appendChild(b)});
+function show(id){
+ document.querySelectorAll("section").forEach(function(s){s.classList.toggle("on",s.id===id)});
+ tb.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.t===id)});
+ try{location.hash=id}catch(e){}window.scrollTo(0,0)}
+// plan
+$("plan").innerHTML=DAYS.map(function(d,i){var td=new Date().toDateString()===new Date(DD[i]+'T12:00:00').toDateString();return '<h2>'+d[0]+(td?' (امروز)':'')+'</h2><div class="day">'+d[1].map(function(e){return '<div class="ev"><b>'+e[0]+'</b><span>'+esc(e[1])+(e[2]?'<small>'+esc(e[2])+'</small>':'')+'</span></div>'}).join("")+'</div>'}).join("")+
+'<div class="box"><b>هوا:</b> شب‌ها احتمالاً سرد است. روز در آفتاب کمی کلافه‌کننده، ولی کلاً خنک.</div>';
+// rooms
+$("rooms").insertAdjacentHTML("afterbegin",'<p class="helper">فهرست اولیه اقامتگاه از فایل قبلی؛ نام‌های مشابه هنوز با اعضای تلگرام تطبیق داده نشده‌اند.</p>');
+function renderRooms(){
+ var q=norm($("q").value),h="";
+ ROOMS.forEach(function(r){var hit=q&&norm(r[3]).indexOf(q)>-1;
+  h+='<div class="room'+(hit?' hit':'')+'"><strong>'+esc(r[1])+'</strong><span>'+esc(r[3])+'<br><span class="mu">'+esc(r[0])+'</span></span><em>'+r[2]+'</em></div>'});
+ $("rl").innerHTML=h;
+ var f=document.querySelector(".room.hit");if(f)f.scrollIntoView({block:"center"})}
+$("q").oninput=renderRooms;renderRooms();
+// checklist
+var st={};try{st=JSON.parse(localStorage.getItem("esfahak-pack")||"{}")}catch(e){}
+function renderPack(){
+ var n=PACK.filter(function(_,i){return st[i]}).length;
+ $("pack").innerHTML='<h2>چه چیزهایی ببرم؟ ('+n+' از '+PACK.length+')</h2>'+PACK.map(function(p,i){return '<label class="ck"><input type="checkbox" data-i="'+i+'"'+(st[i]?' checked':'')+'><span>'+p+'</span></label>'}).join("");
+ $("pack").querySelectorAll("input").forEach(function(c){c.onchange=function(){st[c.dataset.i]=c.checked;try{localStorage.setItem("esfahak-pack",JSON.stringify(st))}catch(e){}renderPack()}})}
+renderPack();
+// rules
+$("rules").innerHTML='<h2>نکات مهم</h2>'+RULES.map(function(r){return '<div class="box'+(r[2]?' warn':'')+'"><b>'+r[0]+':</b> '+esc(r[1])+'</div>'}).join("");
+
+$("road").innerHTML='<h2>بنزین</h2><div class="box warn"><b>سهمیه بنزین:</b> تا انارک با کارت آزاد می‌شود بنزین زد. از انارک به سمت طبس احتمالاً فقط با کارت سوخت خودتان. کارت را همراه داشته باشید و وقتی باک به نصف رسید، پمپ بعدی را از دست ندهید.</div><div class="box mu">تهران ← قم ← نائین ← انارک (آخرین بنزین با کارت آزاد) ← خوربیابانک ← طبس ← اصفهک</div>'+stnHtml()+fuelHtml()+'<h2>راه طولانی</h2><div class="box">مسیر حدود ۱۲ ساعت است. هر ۲ تا ۳ ساعت توقف کوتاه کنید و راننده خسته را عوض کنید. آب و تنقلات کافی ببرید. ممکن است آنتن ضعیف باشد؛ اگر ماشینی از دید دور شد، منتظرش بمانید.</div>';
+bindFuel();
+$("sos").innerHTML='<div class="bn warn"><big>مشکل دارید؟</big><p>اول با لیدر تماس بگیرید.</p><div class="chips">'+tel(TEL,"فرهاد (لیدر) "+TELF)+tel("115","۱۱۵ اورژانس")+tel("110","۱۱۰ پلیس")+'</div></div><p class="mu">شمارهٔ لیدر را همین حالا در گوشی ذخیره کنید. ممکن است در مسیر اینترنت نباشد.</p>';
+$("fab").onclick=function(){show("sos")};
+var h=(location.hash||"").slice(1);show(TABS.some(function(t){return t[0]===h})?h:"plan");
+</script>
+<script>
+// Shared profiles use the server; the personal packing list stays on this device.
+let state=null, editing=null, dirty=false, sharedOK=false;
+const roleName={admin:'لیدر و مدیر سفر',assistant:'دستیار لیدر',member:'همسفر'};
+const num=n=>fa(n), safe=v=>esc(String(v??'')).replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+const categories=[['سواری کوچک',7.5,41],['سواری متوسط',8.5,50],['سدان بزرگ',9.5,55],['کراس‌اوور',10,55],['شاسی‌بلند',13,80],['ون / مینی‌بوس',15,70]];
+const extraTabs=[['members','همسفرها'],['profile','پروفایل من'],['admin','مدیریت']];
+for(const [id,title] of extraTabs){
+ const section=document.createElement('section');section.id=id;$('rules').after(section);
+ const b=document.createElement('button');b.textContent=title;b.setAttribute('role','tab');b.dataset.t=id;b.onclick=()=>show(id);tb.appendChild(b);
+ TABS.push([id,title]);
+}
+const originalShow=show;
+show=function(id){
+ if(dirty && !confirm('تغییرات هنوز ذخیره نشده. از این بخش خارج می‌شوید؟'))return;
+ dirty=false;editing=null;originalShow(id);
+ document.querySelectorAll('.bottomnav button').forEach(b=>b.setAttribute('aria-current',String(b.dataset.page===id)));
+ if(id==='profile')renderProfile();if(id==='admin')renderAdmin();
+};
+document.querySelector('header').innerHTML='<div class="brandline"><h1>همسفر اصفهک</h1><span class="badge">۲۷ همسفر · ۴ روز</span></div><p>۲۶ تا ۲۹ آبان ۱۴۰۵ · تهران تا دل کویر</p>';
+const status=document.createElement('div');status.className='statusbar';status.innerHTML='<p id="connection" role="status">در حال اتصال…</p><button id="logout" hidden>خروج از حساب</button>';document.querySelector('header').after(status);
+const bottom=document.createElement('div');bottom.className='bottomnav';bottom.setAttribute('aria-label','دسترسی سریع');bottom.innerHTML=[['plan','برنامه سفر'],['members','همسفرها'],['road','بنزین و مسیر'],['profile','پروفایل من']].map(([id,title])=>`<button data-page="${id}">${title}</button>`).join('');document.body.appendChild(bottom);bottom.querySelectorAll('button').forEach(b=>b.onclick=()=>show(b.dataset.page));
+const toast=document.createElement('div');toast.id='toast';toast.hidden=true;toast.setAttribute('role','status');document.body.appendChild(toast);let toastTimer;
+function say(text){toast.textContent=text;toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.hidden=true,5000)}
+async function api(path,data){
+ let response;try{response=await fetch('/api/'+path,{method:data?'POST':'GET',headers:data?{'Content-Type':'application/json','X-HamSafar':'1'}:{},body:data?JSON.stringify(data):undefined,cache:'no-store'})}catch(e){throw Error('ارتباط با سرور برقرار نیست. تغییرات ذخیره نشده‌اند؛ دوباره تلاش کنید.')}
+ let result;try{result=await response.json()}catch(e){throw Error('این فایل برای اطلاعات مشترک باید از طریق سرور همسفر باز شود.')}
+ if(!response.ok){let e=Error(result.error||'خطایی رخ داد.');e.status=response.status;throw e}return result;
+}
+function guest(){return '<div class="box"><h2>به جمع همسفرها وصل شو</h2><p>هر نفر با کد اختصاصی خودش وارد می‌شود و فقط پروفایل خودش را تغییر می‌دهد.</p><p class="mu">کد ورود را خصوصی از لیدر بگیرید. انتخاب نام به‌تنهایی اجازه ویرایش نمی‌دهد.</p><form class="fields login-form"><label>کد ورود اختصاصی<input name="code" type="password" autocomplete="off" required dir="ltr" maxlength="100"></label><button class="btn wide" type="submit">ورود به سفر</button><p class="error" role="alert"></p></form></div>'}
+function bindLogin(){document.querySelectorAll('.login-form').forEach(form=>form.onsubmit=async e=>{e.preventDefault();const btn=form.querySelector('button');btn.disabled=true;try{await api('login',{code:form.elements.code.value});form.reset();await load();say('به سفر خوش آمدید.')}catch(err){form.querySelector('.error').textContent=err.message}finally{btn.disabled=false}})}
+async function load(silent=false){
+ try{
+  const next=await api('state');state=next;sharedOK=true;
+  $('connection').textContent='متصل · '+(state.me.profile.display_name||state.me.name)+' · '+new Intl.DateTimeFormat('fa-IR',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Tehran'}).format(new Date());
+  $('logout').hidden=false;tb.querySelector('[data-t="admin"]').hidden=state.me.role!=='admin';
+  renderMembers();renderAnnouncements();renderAssignedRooms();
+  if(!dirty&&editing===null){if($('profile').classList.contains('on'))renderProfile();if($('admin').classList.contains('on'))renderAdmin()}
+ }catch(err){
+  sharedOK=false;
+  if(err.status===401){state=null;$('logout').hidden=true;tb.querySelector('[data-t="admin"]').hidden=true;$('members').innerHTML=guest();$('profile').innerHTML=guest();$('admin').innerHTML=guest();bindLogin();$('connection').textContent='برای اطلاعات مشترک، وارد سفر شوید.';document.querySelectorAll('.sharedrooms,.shared-announcement').forEach(el=>el.remove())}
+  else{$('connection').textContent='اتصال قطع است · اطلاعات ممکن است قدیمی باشد';if(!silent)say(err.message);if(!state){$('members').innerHTML=guest();$('profile').innerHTML=guest();$('admin').innerHTML=guest();bindLogin()}}
+ }
+}
+function renderMembers(){
+ const active=state.members.filter(m=>m.active),complete=active.filter(m=>m.profile.display_name),ready=active.filter(m=>m.profile.ready);
+ const oldQuery=$('memberSearch')?.value||'';
+ $('members').innerHTML=`<h2>آدم‌های این سفر</h2><p class="intro">اطلاعات ثبت‌شده را اعضای واردشدهٔ سفر می‌بینند.</p><div class="stats"><div><b>${num(active.length)}</b>همسفر</div><div><b>${num(complete.length)}</b>پروفایل تکمیل‌شده</div><div><b>${num(ready.length)}</b>آماده حرکت</div></div><div class="actions"><button class="btn" id="editMine">تکمیل پروفایل من</button><button class="btn subtle" id="refreshMembers">تازه‌سازی</button></div><label for="memberSearch" class="helper">جست‌وجوی نام یا شهر</label><input id="memberSearch" type="search" placeholder="نام فارسی، تلگرام یا شهر…"><div id="membersList"></div>`;
+ $('memberSearch').value=oldQuery;$('memberSearch').oninput=filterMembers;$('editMine').onclick=()=>show('profile');$('refreshMembers').onclick=()=>load();filterMembers();
+}
+function filterMembers(){
+ const query=norm($('memberSearch').value).toLowerCase();const matches=state.members.filter(m=>m.active&&norm(m.name+' '+(m.profile.display_name||'')+' '+(m.profile.city||'')).toLowerCase().includes(query));
+ $('membersList').innerHTML=matches.map(m=>{let p=m.profile;return `<article class="membercard"><div class="memberhead"><span class="avatar" aria-hidden="true">${safe(m.name.split(' ').slice(0,2).map(x=>x[0]).join(''))}</span><div><div class="membername" dir="auto">${safe(p.display_name||m.name)}</div>${p.display_name?`<div class="telegram" dir="ltr">${safe(m.name)}</div>`:''}<span class="helper">${roleName[m.role]}</span></div></div><div class="membermeta"><span class="tag ${p.ready?'ready':''}">${p.ready?'آماده حرکت':'آمادگی ثبت نشده'}</span>${p.city?`<span class="tag">از ${safe(p.city)}</span>`:''}${p.car?`<span class="tag">${safe(p.car)} · ${num(p.seats||0)} صندلی آزاد</span>`:''}${m.room?`<span class="tag">${safe(m.room)}</span>`:''}</div>${p.about?`<p>${safe(p.about)}</p>`:''}${p.phone&&p.share_phone?`<a class="muted-link" dir="ltr" href="tel:${safe(p.phone)}">${safe(p.phone)}</a>`:''}${!p.display_name?'<p class="helper">هنوز پروفایلش را تکمیل نکرده است.</p>':''}</article>`}).join('')||'<p class="empty">همسفری با این نام یا شهر پیدا نشد.</p>';
+}
+function profileForm(m,admin=false){
+ const p=m.profile;return `<div class="box" id="editor"><h2>${admin?'ویرایش همسفر':'پروفایل من'}</h2><p dir="ltr" class="telegram">${safe(m.name)}</p><p class="helper">نام، شهر، خودرو، معرفی و آمادگی برای اعضای سفر قابل مشاهده‌اند. شماره تماس فقط با انتخاب شما برای اعضا نمایش داده می‌شود؛ مدیر آن را می‌بیند.</p><form id="profileForm" class="fields"><label>نامی که دوست دارید نمایش داده شود<input name="display_name" required maxlength="80" value="${safe(p.display_name||'')}" placeholder="مثلاً پویا میری"></label><label>شهر مبدأ<input name="city" maxlength="60" value="${safe(p.city||'')}" placeholder="مثلاً تهران"></label><label>خودرو<select name="car"><option value="">مسافر هستم / مشخص نشده</option>${categories.map(c=>`<option ${p.car===c[0]?'selected':''}>${c[0]}</option>`).join('')}</select></label><label>صندلی آزاد برای همسفرها<input type="number" name="seats" min="0" max="20" value="${p.seats||0}" inputmode="numeric"><small>این عدد اعلام ظرفیت است؛ رزرو صندلی با هماهنگی لیدر انجام می‌شود.</small></label><label>معرفی کوتاه / هماهنگی<input name="about" maxlength="300" value="${safe(p.about||'')}" placeholder="مثلاً از تهران حرکت می‌کنم."><small>اطلاعات پزشکی یا اطلاعات حساس را اینجا ننویسید.</small></label><label>شماره تماس (اختیاری)<input name="phone" type="tel" dir="ltr" maxlength="20" value="${safe(p.phone||'')}" placeholder="09…"></label><label class="check"><input type="checkbox" name="share_phone" ${p.share_phone?'checked':''}>شماره تماس من به اعضای سفر نمایش داده شود.</label><label class="check"><input type="checkbox" name="ready" ${p.ready?'checked':''}>برای حرکت بعدی آماده‌ام.</label>${admin?`<label>اقامتگاه و اتاق<input name="room" maxlength="120" value="${safe(m.room)}" placeholder="مثلاً حاجی‌پدر · ۱۱۵"></label><label class="check"><input name="active" type="checkbox" ${m.active?'checked':''}>عضو فعال سفر است.</label>`:`<div class="helper">اتاق شما: ${safe(m.room||'هنوز توسط مدیر تعیین نشده')}</div>`}<div class="actions"><button class="btn" type="submit">ذخیره اطلاعات</button><button class="btn subtle" type="button" id="cancelEdit">انصراف</button></div><p class="error" id="profileError" role="alert"></p></form></div>`;
+}
+function bindProfile(m,admin){
+ const form=$('profileForm');editing=m.id;form.oninput=()=>dirty=true;form.onchange=()=>dirty=true;
+ $('cancelEdit').onclick=()=>{dirty=false;editing=null;admin?renderAdmin():renderProfile()};
+ form.onsubmit=async e=>{e.preventDefault();const b=form.querySelector('[type=submit]');b.disabled=true;
+  const p={display_name:form.elements.display_name.value,city:form.elements.city.value,car:form.elements.car.value,seats:Number(form.elements.seats.value),about:form.elements.about.value,phone:form.elements.phone.value.replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)),share_phone:form.elements.share_phone.checked,ready:form.elements.ready.checked};
+  let payload={id:m.id,version:m.version,profile:p};if(admin){payload.room=form.elements.room.value;payload.active=form.elements.active.checked}
+  try{await api('profile',payload);dirty=false;editing=null;await load();say('اطلاعات ذخیره شد و برای اعضای سفر قابل مشاهده است.')}catch(err){$('profileError').textContent=err.message;if(err.status===409){$('profileError').innerHTML=safe(err.message)+' <button type="button" class="btn subtle" id="reloadConflict">دریافت نسخه تازه</button>';$('reloadConflict').onclick=()=>{dirty=false;editing=null;load()}}}finally{b.disabled=false}
+ };
+}
+function renderProfile(){if(!state){$('profile').innerHTML=guest();bindLogin();return}$('profile').innerHTML=profileForm(state.me);bindProfile(state.me,false)}
+function renderAdmin(){
+ if(!state||state.me.role!=='admin'){$('admin').innerHTML='<div class="box">این بخش فقط برای مدیر سفر در دسترس است.</div>';return}
+ $('admin').innerHTML=`<h2>مدیریت سفر</h2><p class="intro">دسترسی مدیر روی سرور کنترل می‌شود. اطلاعات مهم بدون تأیید لیدر به اعضا نسبت داده نشده است.</p><div class="box"><h3>اطلاعیه مشترک</h3><form id="announcementForm" class="fields"><label>متن اطلاعیه<textarea id="announcementText" maxlength="1200">${safe(state.announcement)}</textarea></label><button class="btn" type="submit">ذخیره اطلاعیه برای گروه</button></form></div><div class="box"><h3>اعضا و تخصیص اتاق</h3><label for="adminMember">انتخاب همسفر</label><select id="adminMember"><option value="">یک نفر را انتخاب کنید</option>${state.members.map(m=>`<option value="${m.id}">${safe(m.name)}${m.active?'':' — غیرفعال'}</option>`).join('')}</select><div id="adminEditor"></div></div><div class="box"><h3>آخرین تغییرات</h3><p class="helper">ثبت ویرایش‌ها برای پیگیری مدیر؛ محتوای خصوصی در این فهرست تکرار نمی‌شود.</p>${state.audit.map(a=>`<div class="mem"><span>${safe(state.members.find(m=>m.id===a.actor)?.name||'مدیر')} · ${a.action==='announcement'?'اطلاعیه':safe(state.members.find(m=>m.id===a.target)?.name||'پروفایل')}</span><small>${new Intl.DateTimeFormat('fa-IR',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Asia/Tehran'}).format(new Date(a.stamp*1000))}</small></div>`).join('')||'<p class="helper">هنوز تغییری ثبت نشده است.</p>'}</div>`;
+ $('announcementText').oninput=()=>dirty=true;
+ $('announcementForm').onsubmit=async e=>{e.preventDefault();const btn=e.target.querySelector('button');btn.disabled=true;try{await api('announcement',{text:$('announcementText').value});dirty=false;await load();say('اطلاعیه برای اعضای سفر ذخیره شد.')}catch(err){say(err.message)}finally{btn.disabled=false}};
+ $('adminMember').onchange=()=>{if(dirty&&!confirm('تغییرات ذخیره نشده‌اند. ادامه می‌دهید؟'))return;dirty=false;let m=state.members.find(m=>m.id===Number($('adminMember').value));$('adminEditor').innerHTML=m?profileForm(m,true):'';if(m)bindProfile(m,true)};
+}
+function renderAnnouncements(){document.querySelectorAll('.shared-announcement').forEach(x=>x.remove());if(state.announcement){const el=document.createElement('div');el.className='box shared-announcement';el.innerHTML='<span class="notice-title">اطلاعیه لیدر</span><p class="notice-content">'+safe(state.announcement)+'</p>';$('plan').prepend(el)}}
+function renderAssignedRooms(){
+ document.querySelectorAll('.sharedrooms').forEach(x=>x.remove());const el=document.createElement('div');el.className='box sharedrooms';el.innerHTML='<h2>اتاق‌های تأییدشده اعضا</h2><p class="helper">اتصال نام‌های تلگرام به اتاق‌ها را مدیر تأیید می‌کند؛ اسامی مشابه خودکار تطبیق داده نشده‌اند.</p>'+state.members.filter(m=>m.active&&m.room).map(m=>`<div class="mem"><span dir="auto">${safe(m.profile.display_name||m.name)}</span><b>${safe(m.room)}</b></div>`).join('');if(!state.members.some(m=>m.active&&m.room))el.innerHTML+='<p class="helper">هنوز اتاقی به نام اعضای این فهرست ثبت نشده است.</p>';$('rooms').prepend(el);
+}
+$('logout').onclick=async()=>{if(dirty&&!confirm('تغییرات ذخیره نشده‌اند. خارج می‌شوید؟'))return;try{await api('logout',{});dirty=false;state=null;await load();say('از حساب خارج شدید.')}catch(e){say(e.message)}};
+// A next scheduled rendezvous is deliberately not a GPS/location feature.
+const nextCard=document.createElement('div');nextCard.className='box';nextCard.id='nextMeetup';$('plan').prepend(nextCard);
+function nextMeetup(){
+ const now=Date.now();const events=[];
+ DAYS.forEach((day,i)=>day[1].forEach(e=>{const normalized=e[0].replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d));if(/^\d{1,2}:\d{2}$/.test(normalized)){const [h,m]=normalized.split(':');events.push({at:Date.parse(DD[i]+'T'+h.padStart(2,'0')+':'+m+':00+03:30'),e,day:day[0]})}}));
+ const n=events.find(e=>e.at>now);nextCard.innerHTML='<span class="notice-title">قرار بعدی گروه</span>'+(n?`<div class="next-time">${safe(n.e[0])}</div><b>${safe(n.e[1])}</b><p class="helper">${safe(n.day)}${n.e[2]?' · '+safe(n.e[2]):''}</p>`:'<p>قرار بعدی با ساعت دقیق در برنامه ثبت نشده است؛ برنامه کامل و اطلاعیه لیدر را بررسی کنید.</p>')+'<p class="helper">بر اساس برنامه سفر و ساعت تهران؛ موقعیت شما را نمی‌گیرد. برنامه‌های «ظهر»، «عصر» و «شب» را در فهرست روزانه ببینید. تغییرات نهایی با لیدر است.</p>';
+}nextMeetup();setInterval(nextMeetup,60000);
+// Replace model-specific guesses with transparent, editable category averages.
+$('road').innerHTML=`<h2>ماشین‌حساب بنزین</h2><p class="intro">تخمین دسته‌ای برای برنامه‌ریزی؛ مصرف واقعی هر خودرو متفاوت است.</p><div class="box"><form id="fuelForm" class="fields"><label>دسته خودرو<select id="carCategory">${categories.map((c,i)=>`<option value="${i}">${c[0]} · میانگین ${num(c[1])} لیتر در ۱۰۰ کیلومتر</option>`).join('')}</select></label><div class="fuelcols"><label>مسافت پیش رو (کیلومتر)<input id="distance" type="number" inputmode="decimal" min="1" max="10000" value="100" step="any" required></label><label>مصرف میانگین (لیتر / ۱۰۰ کیلومتر)<input id="consumption" type="number" inputmode="decimal" min="1" max="50" value="7.5" step="any" required></label><label>ظرفیت باک (لیتر)<input id="tank" type="number" inputmode="decimal" min="5" max="200" value="41" step="any" required></label><label>بنزین فعلی<select id="tankLevel"><option value="1">باک پر</option><option value=".75">سه‌چهارم باک</option><option value=".5">نصف باک</option><option value=".25">ربع باک</option></select></label></div><p class="helper">ظرفیت باک و مصرف، فرض نمونه برای این دسته‌اند؛ اگر عدد خودروی خودتان را می‌دانید تغییر دهید. مسافت را از مسیریاب وارد کنید؛ مقدار اولیه ۱۰۰ کیلومتر فقط مثال است.</p><div id="fuelResult" aria-live="polite"></div></form></div><h2>پیش از حرکت</h2><div class="box"><p>کارت سوخت شخصی همراه داشته باشید. وضعیت سهمیه، موجودی و ساعت کار پمپ‌ها باید همان روز بررسی شود.</p><p>مسیر اعلام‌شده سفر: تهران ← قم ← نائین ← انارک ← خوربیابانک ← طبس ← اصفهک</p><p class="helper">مسافت جاده‌ای دقیق و باز بودن پمپ‌بنزین در این برنامه تأیید نشده؛ برای تصمیم سوخت‌گیری روی تخمین قدیمی فاصله‌ها تکیه نکنید.</p></div><h2>جست‌وجوی پمپ‌بنزین روی نقشه</h2><div class="box"><div class="chips">${['قم','نائین','انارک','خور','طبس'].map(city=>`<a class="btn subtle" href="https://www.google.com/maps/search/${encodeURIComponent('پمپ بنزین '+city)}" target="_blank" rel="noopener">${city}</a>`).join('')}</div><p class="helper">باز کردن نقشه به اینترنت نیاز دارد.</p></div><div class="box"><b>استراحت راننده</b><p>در مسیر طولانی توقف منظم داشته باشید و قبل از خستگی راننده را عوض کنید. آب و خوراکی همراه داشته باشید.</p></div>`;
+function fuel(){const f=$('fuelForm');if(!f.checkValidity()){$('fuelResult').innerHTML='<p class="error">مسافت، مصرف و ظرفیت باک باید عدد مثبت و در بازه مشخص‌شده باشند.</p>';return}const d=+$('distance').value,c=+$('consumption').value,t=+$('tank').value,l=+$('tankLevel').value;const current=t*l,reserve=t*.2,usable=Math.max(0,current-reserve),need=d*c/100,range=usable/c*100,extra=Math.max(0,need+reserve-current),over=need+reserve>t;const round=n=>num(Math.round(n*10)/10);$('fuelResult').innerHTML=`<div class="calc-result"><strong>${round(need)} لیتر</strong><div>مصرف تخمینی برای ${num(d)} کیلومتر</div></div><p>با حفظ ۲۰٪ ظرفیت باک به‌عنوان ذخیره، برد تخمینی فعلی <b>${num(Math.floor(range))} کیلومتر</b> است.</p><p>${over?'این مسیر با یک باک و ذخیره انتخابی پوشش داده نمی‌شود؛ توقف سوخت‌گیری در مسیر لازم است.':extra>0?'برای این تخمین، حدود '+round(extra)+' لیتر سوخت بیشتر لازم است.':'در این تخمین، سوخت فعلی مسیر را با ذخیره انتخابی پوشش می‌دهد.'}</p><p class="helper">۲۰٪ ذخیره، فرض محاسبه این ابزار است و تضمین رسیدن نیست. بار، شیب، سرعت و کولر مصرف را تغییر می‌دهند.</p>`}
+$('carCategory').onchange=()=>{const c=categories[+$('carCategory').value];$('consumption').value=c[1];$('tank').value=c[2];fuel()};$('fuelForm').oninput=fuel;$('fuelForm').onsubmit=e=>e.preventDefault();fuel();
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
+window.addEventListener('online',()=>load(true));window.addEventListener('offline',()=>{$('connection').textContent='آفلاین · ویرایش مشترک تا اتصال دوباره ذخیره نمی‌شود'});
+// No background refresh while a person is editing a form.
+setInterval(()=>{if(!dirty&&!document.hidden)load(true)},15000);
+const requested=(typeof initialPageHash==='string'?initialPageHash:location.hash).slice(1);
+show(TABS.some(t=>t[0]===requested)?requested:'plan');load();
+
+</script>
+</body>
+</html>

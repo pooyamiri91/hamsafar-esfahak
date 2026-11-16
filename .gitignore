@@ -1,0 +1,12 @@
+private/
+__pycache__/
+*.py[cod]
+*.sqlite*
+*.db
+.env
+.env.*
+!.env.example
+*access-codes*
+*.log
+.DS_Store
+Thumbs.db
