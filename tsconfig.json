@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "target": "ES2023", "module": "NodeNext", "moduleResolution": "NodeNext",
+    "strict": true, "skipLibCheck": true, "noEmit": true,
+    "types": ["node"]
+  },
+  "include": ["db/**/*.ts", "netlify/server/**/*.ts", "drizzle.config.ts", "tests/**/*.ts"]
+}

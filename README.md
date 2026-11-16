@@ -1,8 +1,8 @@
 # HamSafar Esfahak — simplified name entry
 
-Mobile Persian trip companion. Members select their existing Telegram name; only the administrator needs a password.
+Mobile Persian trip companion. The Netlify site shows all 27 names immediately, with an edit button on each profile. Visitors can update public travel details without selecting an identity or signing in. Shared edits persist in Netlify Database. Anyone with the link can edit public profiles; the UI asks visitors to edit their own details.
 
-Name entry is a convenience workflow, not identity verification. Anyone with the link can select another member's name and edit that profile's public fields. Selecting the leader's name **does not** grant administrator permission. Do not collect sensitive information with this workflow. Private phone numbers are visible and editable only to the password-verified administrator.
+Administrator login remains separate for announcements, room assignments, member activation and private phone fields. Public edits preserve those restricted fields. Anonymous edits appear as public edits in the administrator history.
 
 ## Local run
 
@@ -14,7 +14,17 @@ python server.py --port 8766
 
 Open http://127.0.0.1:8766. The first local run creates `private/access-codes.txt` with the administrator password. Existing local databases and profiles are preserved. Older per-member codes no longer provide entry; members use name selection.
 
-## Vercel deployment
+## Netlify deployment
+
+The Netlify site serves the existing frontend from `public` and the shared-data API from `netlify/server/index.ts`. `netlify.toml` selects Node.js 24 and publishes only the frontend assets copied by `build_static.py`; Python source and private runtime files are excluded from the published directory.
+
+Members view and edit profiles directly without login. The API seeds the 27 names without overwriting existing profiles. Members, profile versions, sessions, announcements, audit entries and login attempt limits persist in Netlify Database through the Drizzle adapter. `db/schema.ts` defines the schema and generated migrations in `netlify/database/migrations` are applied by Netlify during deployment. No external database connection string is needed for this deployment.
+
+`HAMSAFAR_ADMIN_CODE` is optional for member entry. Configure a private value of at least 16 characters in Netlify to enable the existing administrator password flow. Missing administrator configuration returns a JSON error only for administrator login; it does not prevent name selection or profile updates. Rotating this value invalidates administrator sessions. Selecting the leader's name alone never grants administrator access.
+
+After deployment, `/api/roster` should return JSON with the active names and `/api/state` should return JSON with all active profiles without a session. Verify direct profile editing, profile saving after reload, logout, and administrator permissions on the deployed site. Existing Python SQLite or external Postgres records are not automatically imported into the fresh Netlify database.
+
+## Legacy Vercel deployment
 
 1. Upload all source files and folders, including `api`, to the repository root. Replace older files.
 2. Connect a Postgres database to the **Production** environment through Vercel Storage / Marketplace. Neon is one compatible provider.
@@ -38,10 +48,9 @@ The old local administrator code does not automatically become the cloud passwor
 ## Validation
 
 ```sh
-python tests/test_name_login.py
-python tests/test_cloud_setup.py
-python build_static.py
+npm test
+npm run typecheck
 node --check mobile.js
 ```
 
-The automated checks verify shared-data behavior, name-based entry, administrator isolation, private contact handling, concurrent edits, logout and a safe cloud configuration failure. A real hosted Postgres connection and Vercel deployment must still be verified after configuring the external service.
+The API integration tests execute the generated PostgreSQL migrations in an isolated PGlite database and verify name entry, persistence across handler restarts, session revocation, administrator isolation, private phone fields, version conflicts, CSRF checks, input validation and shared login attempt limits. Hosted routing and Netlify Database connectivity require verification after deployment.
