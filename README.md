@@ -1,43 +1,47 @@
-# HamSafar Esfahak
+# HamSafar Esfahak — simplified name entry
 
-Mobile-first Persian trip companion for the Esfahak group trip.
+Mobile Persian trip companion. Members select their existing Telegram name; only the administrator needs a password.
 
-## Run locally
+Name entry is a convenience workflow, not identity verification. Anyone with the link can select another member's name and edit that profile's public fields. Selecting the leader's name **does not** grant administrator permission. Do not collect sensitive information with this workflow. Private phone numbers are visible and editable only to the password-verified administrator.
 
-Requires Python 3.10 or newer. No third-party Python packages are required.
+## Local run
+
+Python 3.10 or newer, no third-party dependencies for local SQLite mode:
 
 ```sh
 python server.py --port 8766
 ```
 
-Open http://127.0.0.1:8766. On Windows, you can also run `START.bat`.
+Open http://127.0.0.1:8766. The first local run creates `private/access-codes.txt` with the administrator password. Existing local databases and profiles are preserved. Older per-member codes no longer provide entry; members use name selection.
 
-The first run creates the `private/` folder with the SQLite database and individual login codes in `private/access-codes.txt`. Only give each participant their own code. The seeded **Farhad Leader** account is the administrator; assistants can edit their own profiles.
+## Vercel deployment
 
-## Features
+1. Upload all source files and folders, including `api`, to the repository root. Replace older files.
+2. Connect a Postgres database to the **Production** environment through Vercel Storage / Marketplace. Neon is one compatible provider.
+3. Under Settings > Environment Variables, ensure `DATABASE_URL` (or `POSTGRES_URL`) contains the database connection URL. Add a private `HAMSAFAR_ADMIN_CODE` of at least 16 characters; use a long random value. The code is not stored in this repository.
+4. Framework Preset: Other. Clear old Build Command and Output Directory overrides so `vercel.json` applies (`python build_static.py`, output `public`).
+5. Redeploy. Open `/api/state`: JSON with a sign-in-required error is expected before login. A Vercel 404 means the API files or routing were not deployed; JSON status 503 means database or administrator setup is incomplete or unreachable.
+6. Members choose a name. For administration, open “ورود مدیر سفر” on the sign-in screen and enter `HAMSAFAR_ADMIN_CODE`. If signed in as a member, first sign out.
 
-- Initial roster of 27 participants and per-member access codes.
-- Shared profiles with optional phone-number visibility and readiness status.
-- Administrator profile editing, room assignments, member activation, announcements and edit history.
-- Category-based fuel estimates with editable consumption, distance and tank capacity.
-- Next scheduled rendezvous using Tehran time, itinerary, room notes, emergency links and a personal packing list.
-- Server-side authorization, version checks for concurrent edits, and SQLite persistence.
+Cloud tables and the 27 initial names are created automatically, once a configured database is reachable. Data persists in Postgres across deployments. The cloud API never falls back to SQLite or `/tmp`. Keep production and preview databases separate: the administrator password is applied to the configured database on cold-start initialization.
 
-`index.html` bundles the styles and scripts so the itinerary and fuel calculator also work as a standalone file. Shared features require the running Python server. `mobile.js` and `mobile.css` are the editable source copies of the additions embedded in the HTML; keep the embedded versions synchronized when editing.
+Changing `HAMSAFAR_ADMIN_CODE` and redeploying rotates the password and revokes older administrator sessions when initialization runs. Regular name-entry sessions remain separate.
 
-## Data and hosting
+The old local administrator code does not automatically become the cloud password. Existing local profile records are not uploaded or migrated by this package.
 
-The repository includes the initial trip content and seed roster. Runtime profiles, login codes and the database are excluded from version control. Do not upload `private/`.
+## Static output and secrets
 
-This is a local MVP. GitHub stores its source; GitHub Pages cannot run the Python backend. For remote group use, deploy the backend behind HTTPS with persistent private storage and set `HAMSAFAR_SECURE=1`. The standard-library HTTP server is intended for local evaluation, not direct public exposure.
+`build_static.py` copies only HTML, CSS and JS into the public output. Database credentials, server code and local runtime files are not part of that output. Never upload `private/`, real `.env` files or access codes to GitHub. `.env.example` contains placeholders only.
 
-See `README.fa.txt` for Persian setup and operational notes.
+`index.html` includes embedded copies of `mobile.js` and `mobile.css` so local standalone read-only features remain available. Keep those embedded versions synchronized when changing frontend source.
 
-## Verification
+## Validation
 
 ```sh
-python tests/test_shared.py
+python tests/test_name_login.py
+python tests/test_cloud_setup.py
+python build_static.py
 node --check mobile.js
 ```
 
-The shared-data checks use a temporary database and cover authorization, phone privacy, persistence, announcements, session revocation and concurrent edits.
+The automated checks verify shared-data behavior, name-based entry, administrator isolation, private contact handling, concurrent edits, logout and a safe cloud configuration failure. A real hosted Postgres connection and Vercel deployment must still be verified after configuring the external service.

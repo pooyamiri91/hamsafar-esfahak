@@ -1,0 +1,25 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "python build_static.py",
+  "outputDirectory": "public",
+  "functions": {
+    "api/index.py": {
+      "includeFiles": "{server.py,cloud_db.py}",
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {"source": "/api/:path*", "destination": "/api/index"}
+  ],
+  "headers": [
+    {"source": "/api/:path*", "headers": [
+      {"key": "Cache-Control", "value": "no-store"},
+      {"key": "X-Content-Type-Options", "value": "nosniff"}
+    ]},
+    {"source": "/(.*)", "headers": [
+      {"key": "Referrer-Policy", "value": "same-origin"},
+      {"key": "X-Frame-Options", "value": "DENY"}
+    ]}
+  ]
+}

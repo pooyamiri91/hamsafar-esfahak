@@ -19,12 +19,19 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 ROOT = Path(__file__).resolve().parent
 PRIVATE = Path(os.environ.get('HAMSAFAR_DATA', str(ROOT / 'private')))
-PRIVATE.mkdir(parents=True, exist_ok=True)
+IS_CLOUD = os.environ.get('VERCEL') == '1'
+if not IS_CLOUD:
+    PRIVATE.mkdir(parents=True, exist_ok=True)
 DB = PRIVATE / 'trip.sqlite3'
 NAMES = ['Pooya Miri','Bahareh Mohebzadeh','Farhad Leader','Tina (leader assistant)','Mohamadreza Kalate (leader assistant)','Farhad Ashrafi (leader assistant)','Ali Nategh Fasihi','Haki P.e','Sarina Sadeghi','Christina','Soroush Berenty','Mohammad Khalili','Maryam Shenasa','Ashkan Sajjadi','MObina','Koohyar H.j','Mahshid Ospid','Negar','Kaveh Javan','Rezvaneh Jafari','Fateme','Mina Gholami','Hanieh Chitsaz','Mahi','Sepehr','Neda Seddigh','Soroush H']
 
 @contextmanager
 def connect():
+    if IS_CLOUD:
+        from cloud_db import connect as cloud_connect
+        with cloud_connect() as db:
+            yield db
+        return
     db = sqlite3.connect(DB, timeout=15)
     db.row_factory = sqlite3.Row
     try:
@@ -40,6 +47,10 @@ def digest(code):
     return hashlib.sha256(code.encode()).hexdigest()
 
 def initialize():
+    if IS_CLOUD:
+        from cloud_db import initialize as cloud_initialize
+        cloud_initialize(NAMES, digest)
+        return
     with connect() as db:
         db.executescript('''
         CREATE TABLE IF NOT EXISTS members(id INTEGER PRIMARY KEY, name TEXT NOT NULL,
@@ -51,14 +62,17 @@ def initialize():
         CREATE TABLE IF NOT EXISTS audit(id INTEGER PRIMARY KEY, actor INTEGER, target INTEGER,
           action TEXT, stamp INTEGER);
         ''')
+        if 'admin_verified' not in [c['name'] for c in db.execute('PRAGMA table_info(sessions)')]:
+            db.execute('ALTER TABLE sessions ADD COLUMN admin_verified INTEGER NOT NULL DEFAULT 0')
         if db.execute('SELECT count(*) FROM members').fetchone()[0]:
             return
-        codes = ['همسفر اصفهک — کدهای ورود خصوصی', 'این فایل فقط برای مدیر است. برای هر نفر فقط کد خودش را ارسال کنید.', 'کد مدیر متعلق به Farhad Leader است. دستیارها اجازه ویرایش اطلاعات دیگران ندارند.', '']
+        codes = ['همسفر اصفهک — رمز خصوصی مدیریت', 'این فایل فقط برای مدیر است. اعضا با انتخاب نام و بدون کد وارد می‌شوند.', 'کد مدیر متعلق به Farhad Leader است. دستیارها اجازه ویرایش اطلاعات دیگران ندارند.', '']
         for i, name in enumerate(NAMES, 1):
             code = secrets.token_urlsafe(12)
             role = 'admin' if i == 3 else ('assistant' if i in (4,5,6) else 'member')
             db.execute('INSERT INTO members(id,name,role,code) VALUES(?,?,?,?)', (i,name,role,digest(code)))
-            codes.append(f'{name}\t{code}')
+            if role=='admin':
+                codes.append(f'{name}\t{code}')
         db.execute('INSERT INTO settings VALUES(?,?)', ('announcement',''))
         (PRIVATE / 'access-codes.txt').write_text('\n'.join(codes), encoding='utf-8-sig')
 
@@ -93,14 +107,17 @@ class Handler(BaseHTTPRequestHandler):
             token = c['hamsafar'].value if 'hamsafar' in c else ''
         except Exception:
             token = ''
-        row = db.execute('SELECT m.* FROM members m JOIN sessions s ON s.member=m.id WHERE s.token=? AND s.expires>? AND m.active=1', (digest(token),int(time.time()))).fetchone()
+        row = db.execute('SELECT m.*,s.admin_verified FROM members m JOIN sessions s ON s.member=m.id WHERE s.token=? AND s.expires>? AND m.active=1', (digest(token),int(time.time()))).fetchone()
         if not row:
             raise Rejection(401,'برای دیدن اطلاعات همسفرها وارد شوید.')
+        row = dict(row)
+        if not row['admin_verified'] and row['role']=='admin':
+            row['role']='member'
         return row, token
 
     def public(self, row, viewer):
         p = json.loads(row['profile'])
-        if viewer['id'] != row['id'] and viewer['role'] != 'admin' and not p.get('share_phone'):
+        if viewer['role'] != 'admin' and not p.get('share_phone'):
             p.pop('phone',None)
         return dict(id=row['id'],name=row['name'],role=row['role'],profile=p,room=row['room'],active=bool(row['active']),version=row['version'],updated=row['updated'])
 
@@ -109,6 +126,10 @@ class Handler(BaseHTTPRequestHandler):
         if path.startswith('/api/'):
             try:
                 with connect() as db:
+                    if path == '/api/roster':
+                        rows=db.execute('SELECT id,name FROM members WHERE active=1 ORDER BY id').fetchall()
+                        self.respond(200,dict(members=[dict(r) for r in rows]))
+                        return
                     me, _ = self.session(db)
                     if path != '/api/state':
                         raise Rejection(404,'مسیر پیدا نشد.')
@@ -147,23 +168,30 @@ class Handler(BaseHTTPRequestHandler):
             if not isinstance(data,dict):
                 raise ValueError()
             with connect() as db:
-                if self.path == '/api/login':
+                if self.path in ('/api/login','/api/join'):
                     now = time.time()
-                    ip = self.client_address[0]
+                    ip = self.client_address[0]+(':'+self.path)
                     with attempt_lock:
                         recent = [t for t in attempts.get(ip,[]) if now-t<300]
                         attempts[ip] = recent
-                        if len(recent)>=20:
+                        if len(recent)>=(20 if self.path=='/api/login' else 300):
                             raise Rejection(429,'تلاش‌های زیادی انجام شده؛ ۵ دقیقه دیگر امتحان کنید.')
                         recent.append(now)
                     code = data.get('code','')
-                    row = db.execute('SELECT * FROM members WHERE code=? AND active=1',(digest(str(code).strip()),)).fetchone()
+                    verified = self.path=='/api/login'
+                    if verified:
+                        row = db.execute("SELECT * FROM members WHERE code=? AND role='admin' AND active=1",(digest(str(code).strip()),)).fetchone()
+                    else:
+                        member_id = data.get('id')
+                        if type(member_id)!=int:
+                            raise Rejection(400,'نام خودتان را از فهرست انتخاب کنید.')
+                        row = db.execute('SELECT * FROM members WHERE id=? AND active=1',(member_id,)).fetchone()
                     if not row:
-                        raise Rejection(401,'کد ورود معتبر نیست. کد اختصاصی خود را از لیدر بگیرید.')
+                        raise Rejection(401,'رمز مدیر معتبر نیست.' if verified else 'این نام در فهرست اعضای فعال نیست.')
                     token = secrets.token_urlsafe(32)
                     db.execute('DELETE FROM sessions WHERE expires<?',(int(now),))
-                    db.execute('INSERT INTO sessions VALUES(?,?,?)',(digest(token),row['id'],int(now)+7*86400))
-                    secure = '; Secure' if os.environ.get('HAMSAFAR_SECURE')=='1' else ''
+                    db.execute('INSERT INTO sessions(token,member,expires,admin_verified) VALUES(?,?,?,?)',(digest(token),row['id'],int(now)+7*86400,int(verified)))
+                    secure = '; Secure' if IS_CLOUD or os.environ.get('HAMSAFAR_SECURE')=='1' else ''
                     self.respond(200,dict(ok=True),f'hamsafar={token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=604800{secure}')
                     return
                 me, token = self.session(db)
@@ -200,6 +228,10 @@ class Handler(BaseHTTPRequestHandler):
                     clean[field] = value.strip()
                 clean['share_phone'] = p.get('share_phone') is True
                 clean['ready'] = p.get('ready') is True
+                if me['role']!='admin':
+                    previous=json.loads(row['profile'])
+                    clean['phone']=previous.get('phone','')
+                    clean['share_phone']=previous.get('share_phone',False)
                 seats = p.get('seats',0)
                 if type(seats)!=int or not 0<=seats<=20:
                     raise Rejection(400,'ظرفیت آزاد باید بین صفر و ۲۰ باشد.')
